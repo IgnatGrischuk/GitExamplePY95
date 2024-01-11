@@ -12,6 +12,6 @@ def calculate_summ_of_numbers(filename):
     return total_sum
 
 
-filename = 'TaskSix.txt'
+filename = 'Task_6.txt'
 result = calculate_summ_of_numbers(filename)
 print(f"Сумма всех чисел в файле: {result}")
