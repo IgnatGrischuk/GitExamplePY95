@@ -20,8 +20,8 @@ def encrypt_file(file_path):
     encrypted_lines = [caesar_cipher(line, i + 1) for i, line in
                        enumerate(lines)]
 
-    with open('TaskSeven2.txt', 'w') as output_file:
+    with open('Task_7_1.txt', 'w') as output_file:
         output_file.writelines(encrypted_lines)
 
 
-encrypt_file('TaskSeven.txt')
+encrypt_file('Task_7.txt')
