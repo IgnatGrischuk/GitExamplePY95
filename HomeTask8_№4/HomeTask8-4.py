@@ -32,6 +32,6 @@ def censor_text(input_filename, stop_words_filename):
         print(f"Файл {input_filename} не найден.")
 
 
-input_filename = 'TaskFour.txt'
+input_filename = 'Task_4.txt'
 stop_words_filename = 'stop_words.txt'
 censor_text(input_filename, stop_words_filename)
