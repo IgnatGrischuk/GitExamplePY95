@@ -17,8 +17,8 @@ def process_file(input_filename, output_filename):
 
 
 if __name__ == '__main__':
-    input_filename = 'Task1.txt'
-    output_filename = 'Task1-1.txt'
+    input_filename = 'Task_3.txt'
+    output_filename = 'Task_3-1.txt'
 
     process_file(input_filename, output_filename)
     print('Программа успешно выполнена.', '\n')
