@@ -6,7 +6,7 @@ class SuperStr(str):
         return self == string * repititions
 
     def is_palindrome(self):
-        cleaned_str = ''.join(char.lower() for char in self if char.isalnum())
+        cleaned_str = ''.join(char.lower() for char in self)
         return cleaned_str == cleaned_str[::-1]
 
 
