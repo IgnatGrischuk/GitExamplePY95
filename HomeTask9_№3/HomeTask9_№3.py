@@ -32,11 +32,15 @@ class Car:
                   " valid year between 1900 and 2100.")
 
     def set_color(self, new_color):
-        self.color = new_color
+        # Check if not empty string
+        if isinstance(new_color, str) and new_color.strip():
+            self.color = new_color
+        else:
+            print("Invalid color. Please provide"
+                  " a non-empty string for color.")
 
 
 # Example of using a Car class
-
 my_car = Car(car_type='Hatchback', year=2012, color='Black')
 print(f"Car type: {my_car.type}\nYear of manufacture: {my_car.year}\n"
       f"Color: {my_car.color}")
@@ -44,9 +48,9 @@ print(f"Car type: {my_car.type}\nYear of manufacture: {my_car.year}\n"
 my_car.start_engine()
 my_car.stop_engine()
 
-
 my_car.set_type('Jeep')
-my_car.set_year('2023')
+# Pass an integer for year
+my_car.set_year(2023)
 my_car.set_color('Purple')
 
 print(f"New parameters - Car type: {my_car.type}\nYear of manufacture:"
