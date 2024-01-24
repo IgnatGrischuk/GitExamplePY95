@@ -38,25 +38,25 @@ class Calculator:
         return self.strategy.execute(num1, num2)
 
 
-# Пример использования
+# Example of using
 calculator = Calculator()
 
-# Установка стратегии сложения
+# Strategy of Addition
 calculator.set_strategy(Addition())
 result = calculator.calculate(5, 3)
 print(f"Addition result: {result}")
 
-# Установка стратегии вычитания
+# Strategy of Subtraction
 calculator.set_strategy(Subtraction())
 result = calculator.calculate(5, 3)
 print(f"Subtraction result: {result}")
 
-# Установка стратегии умножения
+# Strategy of Multiplication
 calculator.set_strategy(Multiplication())
 result = calculator.calculate(5, 3)
 print(f"Multiplication result: {result}")
 
-# Установка стратегии деления
+# Strategy of Division
 calculator.set_strategy(Division())
 result = calculator.calculate(5, 3)
 print(f"Division result: {result}")
