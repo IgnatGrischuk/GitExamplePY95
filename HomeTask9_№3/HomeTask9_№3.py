@@ -25,7 +25,11 @@ class Car:
         self.type = new_type
 
     def set_year(self, new_year):
-        self.year = new_year
+        if isinstance(new_year, int) and 1900 <= new_year <= 2100:
+            self.year = new_year
+        else:
+            print("Invalid year. Please provide a"
+                  " valid year between 1900 and 2100.")
 
     def set_color(self, new_color):
         self.color = new_color
