@@ -51,7 +51,7 @@ class PizzaDirector:
         return self.builder.build()
 
 
-# Пример использования
+# Example of using
 
 builder = PizzaBuilder(size="Medium")
 director = PizzaDirector(builder)
