@@ -3,13 +3,15 @@ import math as m
 
 class Sphere:
 
-    def __init__(self, radius=None, value_one=0, value_two=0, value_three=0):
+    def __init__(self, radius=None, x=0, y=0, z=0):
         if radius is None:
-            self.radius = 1  # единичный радиус
-            self.center = (0, 0, 0)  # центр в начале координат
+            # Unit radius
+            self.radius = 1
+            # Center at the origin
+            self.center = (0, 0, 0)
         else:
             self.radius = radius
-            self.center = (value_one, value_two, value_three)
+            self.center = (x, y, z)
 
     def get_volume(self):
         return (4 / 3) * m.pi * self.radius ** 3
@@ -26,27 +28,38 @@ class Sphere:
     def set_radius(self, radius):
         self.radius = radius
 
-    def set_center(self, value_one, value_two, value_three):
-        self.center = (value_one, value_two, value_three)
+    def set_center(self, x, y, z):
+        self.center = (x, y, z)
 
-    def is_point_inside(self, value_one, value_two, value_three):
-        distance = m.sqrt((value_one - self.center[0]) ** 2
-                          + (value_two - self.center[1]) ** 2
-                          + (value_three - self.center[2]) ** 2)
+    def is_point_inside(self, x, y, z):
+        distance = m.sqrt((x - self.center[0]) ** 2
+                          + (y - self.center[1]) ** 2
+                          + (z - self.center[2]) ** 2)
         return distance <= self.radius
 
 
-# Пример использования:
+# Example of using:
 
-sphere_one = Sphere()  # создание сферы с единичным радиусом и центром в
-# начале координат
-print(sphere_one.get_volume())  # вывод объема
-print(sphere_one.is_point_inside(0.7, 0.7, 0.7))   # проверка, находится ли
-# точка внутри сферы
+# Creating a sphere with a unit radius and centered at the origin
+sphere_one = Sphere()
 
-sphere_two = Sphere(radius=3, value_one=4, value_two=6, value_three=3)  #
-# создание сферы с заданным радиусом и координатами центра
-print(sphere_two.get_square())  # вывод площади внешней поверхности
-print(sphere_two.get_center())  # вывод координат центра
-sphere_two.set_radius(4)  # установка нового радиуса
-print(sphere_two.get_radius())  # вывод нового радиуса
+# The volume output
+print(sphere_one.get_volume())
+
+# Checking whether a point is inside the sphere
+print(sphere_one.is_point_inside(0.7, 0.7, 0.7))
+
+# Creating a sphere with a specified radius and center coordinates
+sphere_two = Sphere(radius=3, x=4, y=6, z=3)  #
+
+# The output of the surface area
+print(sphere_two.get_square())
+
+# The output of the center coordinates
+print(sphere_two.get_center())
+
+# Setting a new radius
+sphere_two.set_radius(4)
+
+# The output of the new radius
+print(sphere_two.get_radius())
