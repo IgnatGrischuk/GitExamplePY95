@@ -4,7 +4,8 @@ class Car:
         self.type = car_type
         self.year = year
         self.color = color
-        self.engine_status = False  # Изначально двигатель не заведен
+        # The engine is initially not started
+        self.engine_status = False
 
     def start_engine(self):
         if not self.engine_status:
@@ -30,7 +31,7 @@ class Car:
         self.color = new_color
 
 
-#  Пример использования класса Car
+# Example of using a Car class
 
 my_car = Car(car_type='Hatchback', year=2012, color='Black')
 print(f"Car type: {my_car.type}\nYear of manufacture: {my_car.year}\n"
