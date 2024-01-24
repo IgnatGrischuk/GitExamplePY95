@@ -25,7 +25,7 @@ class Sphere:
         return (4 / 3) * m.pi * self.radius ** 3
 
     def get_square(self):
-        return 4 * m.pi * self.radius * 2
+        return m.pi * self.radius**2
 
     def get_radius(self):
         return self.radius
