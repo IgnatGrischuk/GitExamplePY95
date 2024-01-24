@@ -10,8 +10,16 @@ class Sphere:
             # Center at the origin
             self.center = (0, 0, 0)
         else:
-            self.radius = radius
-            self.center = (x, y, z)
+            try:
+                # Attempt to convert input values to integers
+                self.radius = int(radius)
+                self.center = (int(x), int(y), int(z))
+            except ValueError:
+                print("Invalid input. Please enter numeric"
+                      " values for radius and center.")
+                # Set default values in case of invalid input
+                self.radius = 1
+                self.center = (0, 0, 0)
 
     def get_volume(self):
         return (4 / 3) * m.pi * self.radius ** 3
