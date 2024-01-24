@@ -26,7 +26,12 @@ class Sphere:
         return self.center
 
     def set_radius(self, radius):
-        self.radius = radius
+        # Check if the radius is a valid value
+        if radius > 0:
+            self.radius = radius
+            print("Radius set successfully.")
+        else:
+            print("Invalid radius. Please provide a positive value.")
 
     def set_center(self, x, y, z):
         self.center = (x, y, z)
