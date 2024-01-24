@@ -11,10 +11,13 @@ class SuperStr(str):
 
 
 string = SuperStr("abab")
-print(string.is_repeatance("ab"))  # Вернет True , так как "ababab" может
-# быть получена повторением "ab"
-print(string.is_repeatance("abc"))  # Вернет False
 
+# Will return True as 'ababab' can be obtained by repeating 'ab'
+print(string.is_repeatance("ab"))
 
+# Will return False
+print(string.is_repeatance("abc"))
+
+# Will return True as the string is a palindrome
 string = SuperStr("A man, a plan, a canal, Panama,")
-print(string.is_palindrome())  # Вернет True , так как строка палиндром
+print(string.is_palindrome())
