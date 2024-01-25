@@ -1,8 +1,8 @@
-import re
 from collections import Counter
 
+
 def find_most_common_word(line):
-    words = re.findall(r'\b\w+\b', line.lower())
+    words = line.lower().split()
     word_counter = Counter(words)
     most_common_word, count = word_counter.most_common(1)[0]
     return most_common_word, count
