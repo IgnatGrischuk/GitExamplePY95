@@ -30,6 +30,38 @@ def write_csv_file(file_path, data):
         writer.writerows(data)
 
 
+def get_valid_date_input(prompt):
+    while True:
+        try:
+            date_str = input(prompt)
+            datetime.strptime(date_str, '%d.%m.%Y')
+            return date_str
+        except ValueError:
+            print("Ошибка: Введите корректную дату (в формате dd.mm.yyyy).")
+
+
+def get_valid_float_input(prompt):
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Ошибка: Введите корректное число.")
+
+
+def add_new_employee():
+    new_employee = {
+        'name': input("Введите имя нового сотрудника: "),
+        'birthday': get_valid_date_input("Введите дату рождения: "),
+        'height': get_valid_float_input("Введите рост: "),
+        'weight': get_valid_float_input("Введите вес: "),
+        'car': input(
+            "Есть ли у сотрудника машина (True/False): ").lower() == 'true',
+        'languages': input(
+            "Введите языки программирования через запятую: ").split(','),
+    }
+    return new_employee
+
+
 def add_employee_to_json(data, new_employee):
     data.append(new_employee)
 
@@ -42,11 +74,25 @@ def add_employee_to_csv(file_path, new_employee):
 
 def search_employee_by_name(data, name):
     for employee in data:
-        if employee['name'] == name:
+        if employee['name'].lower() == name.lower():
             return employee
     return None
 
 
+def display_employee_info(employee):
+    if employee:
+        print("\nИнформация о сотруднике:")
+        print(f"Имя: {employee['name']}")
+        print(f"Дата рождения: {employee['birthday']}")
+        print(f"Рост: {employee['height']} см")
+        print(f"Вес: {employee['weight']} кг")
+        print(f"Машина: {'Да' if employee['car'] else 'Нет'}")
+        print(f"Языки программирования: {', '.join(employee['languages'])}")
+    else:
+        print("\nСотрудник не найден.")
+
+
+# noinspection PyTypeChecker
 def filter_by_programming_language(data, language):
     filtered_employees = [employee for employee in data if
                           language.lower() in map(str.lower,
@@ -55,11 +101,23 @@ def filter_by_programming_language(data, language):
 
 
 def filter_by_birth_year(data, year):
-    birth_year = datetime.strptime(year, '%d.%m.%Y').year
+    try:
+        birth_year = int(year)
+        if not 1900 <= birth_year <= 9999:
+            raise ValueError("Год рождения должен быть в диапазоне от 1900 "
+                             "до 9999.")
+    except ValueError:
+        print("Ошибка: Введите корректный год"
+              " рождения (число в формате YYYY).")
+        return []
+
     filtered_employees = [employee for employee in data if
-                          'birthday' in employee and datetime.strptime(
-                              employee['birthday'],
-                              '%d.%m.%Y').year < birth_year]
+                          'birthday' in employee and
+                          datetime.strptime(employee['birthday'],
+                                            '%d.%m.%Y').year < birth_year]
+
+    if not filtered_employees:
+        print("Сотрудники с указанным годом рождения не найдены.")
     return filtered_employees
 
 
@@ -68,6 +126,7 @@ def average_height(data):
     return sum(heights) / len(heights) if len(heights) > 0 else 0
 
 
+# noinspection PyArgumentList
 def main():
     json_file_path = 'employees.json'
     csv_file_path = 'employees.csv'
@@ -96,53 +155,23 @@ def main():
             print("Данные успешно сохранены в CSV")
 
         elif choice == '3':
-            new_employee = {
-                'name': input("Введите имя нового сотрудника: "),
-                'birthday': input(
-                    "Введите дату рождения нового сотрудника (в формате "
-                    "dd.mm.yyyy): "),
-                'height': input("Введите рост нового сотрудника: "),
-                'weight': input("Введите вес нового сотрудника: "),
-                'car': input(
-                    "Есть ли у нового сотрудника машина (True/False): "
-                    "").lower() == 'true',
-                'languages': input(
-                    "Введите языки программирования через запятую: ").split(
-                    ','),
-            }
+            new_employee = add_new_employee()
             json_data = read_json_file(json_file_path)
             add_employee_to_json(json_data, new_employee)
             write_json_file(json_file_path, json_data)
             print("Информация о новом сотруднике добавлена в JSON")
 
         elif choice == '4':
-            new_employee = {
-                'name': input("Введите имя нового сотрудника: "),
-                'birthday': input(
-                    "Введите дату рождения нового сотрудника (в формате "
-                    "dd.mm.yyyy): "),
-                'height': input("Введите рост нового сотрудника: "),
-                'weight': input("Введите вес нового сотрудника: "),
-                'car': input(
-                    "Есть ли у нового сотрудника машина (True/False): "
-                    "").lower() == 'true',
-                'languages': input(
-                    "Введите языки программирования через запятую: ").split(
-                    ','),
-            }
+            new_employee = add_new_employee()
             add_employee_to_csv(csv_file_path, new_employee)
             print("Информация о новом сотруднике добавлена в CSV")
 
         elif choice == '5':
-            name_to_search = input("Введите имя сотрудника для поиска: ")
+            name_to_search = input(
+                "Введите имя сотрудника для поиска: ").strip()
             json_data = read_json_file(json_file_path)
             employee = search_employee_by_name(json_data, name_to_search)
-            if employee:
-                print("Информация о сотруднике:")
-                print(employee)
-            else:
-                print("Сотрудник с именем '{}' не найден.".format(
-                    name_to_search))
+            display_employee_info(employee)
 
         elif choice == '6':
             language_to_filter = input(
@@ -156,16 +185,14 @@ def main():
                 print(employee)
 
         elif choice == '7':
-            birth_year_to_filter = input(
-                "Введите год рождения для фильтрации: ")
+            birth_year_to_filter = filter_by_birth_year()
             json_data = read_json_file(json_file_path)
             filtered_employees = filter_by_birth_year(json_data,
                                                       birth_year_to_filter)
             average = average_height(filtered_employees)
             print(
-                "Средний рост сотрудников, родившихся до {}: {:.2f} см".format(
-                    birth_year_to_filter, average))
-
+                f"Средний рост сотрудников, родившихся до "
+                f"{birth_year_to_filter}: {average:.2f} см")
         elif choice == '8':
             print("Выход из программы.")
             break
