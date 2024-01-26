@@ -21,8 +21,8 @@ class BeeElephant:
             self.part_of_bee = min(100, max(0, self.part_of_bee - value))
 
 
-BeeElephant = BeeElephant(30, 40)
-print(BeeElephant.part_of_bee, BeeElephant.part_of_elephant)
+bee_elephant_object = BeeElephant(30, 40)
+print(bee_elephant_object.part_of_bee, bee_elephant_object.part_of_elephant)
 
-BeeElephant.eat("nectar", 50)
-print(BeeElephant.part_of_bee, BeeElephant.part_of_elephant)
+bee_elephant_object.eat("nectar", 50)
+print(bee_elephant_object.part_of_bee, bee_elephant_object.part_of_elephant)
