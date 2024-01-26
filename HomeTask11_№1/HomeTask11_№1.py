@@ -1,6 +1,5 @@
 def fibonacci_generator(sequence):
     value_one, value_two = 0, 1
-    # Track the number of Fibonacci numbers generated
     count = 0
     while count < sequence:
         yield value_one
