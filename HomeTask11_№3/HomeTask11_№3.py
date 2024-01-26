@@ -1,11 +1,11 @@
 class Pizza:
-    def __init__(self, size, cheese, pepperoni, mushrooms, onions, bacon):
-        self.size = size
-        self.cheese = cheese
-        self.pepperoni = pepperoni
-        self.mushrooms = mushrooms
-        self.onions = onions
-        self.bacon = bacon
+    def __init__(self):
+        self.size = "Medium"
+        self.cheese = False
+        self.pepperoni = False
+        self.mushrooms = False
+        self.onions = False
+        self.bacon = False
 
     def __str__(self):
         return f"Pizza(size={self.size}, cheese={self.cheese}," \
@@ -16,8 +16,8 @@ class Pizza:
 
 class PizzaBuilder:
     def __init__(self, size):
-        self.pizza = Pizza(size, cheese=False, pepperoni=False,
-                           mushrooms=False, onions=False, bacon=False)
+        self.pizza = Pizza()
+        self.pizza.size = size
 
     def add_cheese(self):
         self.pizza.cheese = True
@@ -44,8 +44,23 @@ class PizzaBuilder:
 
 
 class PizzaDirector:
-    def __init__(self, builder):
-        self.builder = builder
+    def __init__(self, size):
+        self.builder = PizzaBuilder(size)
+
+    def add_toppings(self, *toppings):
+        for topping in toppings:
+            if topping == 'cheese':
+                self.builder.add_cheese()
+            elif topping == 'pepperoni':
+                self.builder.add_pepperoni()
+            elif topping == 'mushrooms':
+                self.builder.add_mushrooms()
+            elif topping == 'onions':
+                self.builder.add_onions()
+            elif topping == 'bacon':
+                self.builder.add_bacon()
+            else:
+                print(f"Unknown topping: {topping}")
 
     def make_pizza(self):
         return self.builder.build()
@@ -53,12 +68,10 @@ class PizzaDirector:
 
 # Example of using
 
-builder = PizzaBuilder(size="Medium")
-director = PizzaDirector(builder)
+director = PizzaDirector(size="Medium")
 
-pizza = director.make_pizza()
-print(pizza)
+# Adding toppings directly through the director
+director.add_toppings('cheese', 'pepperoni', 'mushrooms', 'onions', 'bacon')
 
-builder.add_cheese().add_pepperoni().add_mushrooms().add_onions().add_bacon()
-pizza_with_toppings = builder.build()
+pizza_with_toppings = director.make_pizza()
 print(pizza_with_toppings)
