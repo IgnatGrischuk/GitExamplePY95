@@ -3,12 +3,12 @@ import math as m
 
 class Sphere:
 
-    def __init__(self, radius=None, x=0, y=0, z=0):
+    def __init__(self, radius=1, x=0, y=0, z=0):
         if radius is None:
             # Unit radius
             self.radius = 1
             # Center at the origin
-            self.center = (0, 0, 0)
+            self.center = (x, y, z)
         else:
             try:
                 # Attempt to convert input values to integers
@@ -19,7 +19,7 @@ class Sphere:
                       " values for radius and center.")
                 # Set default values in case of invalid input
                 self.radius = 1
-                self.center = (0, 0, 0)
+                self.center = (x, y, z)
 
     def get_volume(self):
         return (4 / 3) * m.pi * self.radius ** 3
