@@ -38,25 +38,43 @@ class Calculator:
         return self.strategy.execute(num1, num2)
 
 
+def get_numeric_input(self):
+    while True:
+        user_input = input(self)
+        try:
+            num = float(user_input)
+            return num
+        except ValueError:
+            print("Please enter a valid number.")
+
+
 # Example of using
 calculator = Calculator()
 
 # Strategy of Addition
 calculator.set_strategy(Addition())
-result = calculator.calculate(5, 3)
+num1 = get_numeric_input("Enter the first number: ")
+num2 = get_numeric_input("Enter the second number: ")
+result = calculator.calculate(num1, num2)
 print(f"Addition result: {result}")
 
 # Strategy of Subtraction
 calculator.set_strategy(Subtraction())
-result = calculator.calculate(5, 3)
+num1 = get_numeric_input("Enter the first number: ")
+num2 = get_numeric_input("Enter the second number: ")
+result = calculator.calculate(num1, num2)
 print(f"Subtraction result: {result}")
 
 # Strategy of Multiplication
 calculator.set_strategy(Multiplication())
-result = calculator.calculate(5, 3)
+num1 = get_numeric_input("Enter the first number: ")
+num2 = get_numeric_input("Enter the second number: ")
+result = calculator.calculate(num1, num2)
 print(f"Multiplication result: {result}")
 
 # Strategy of Division
 calculator.set_strategy(Division())
-result = calculator.calculate(5, 3)
+num1 = get_numeric_input("Enter the first number: ")
+num2 = get_numeric_input("Enter the second number (not zero): ")
+result = calculator.calculate(num1, num2)
 print(f"Division result: {result}")
