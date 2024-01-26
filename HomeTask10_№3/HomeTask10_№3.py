@@ -23,16 +23,22 @@ class Bus:
             self.speed += value
             if self.speed > self.max_speed:
                 self.speed = self.max_speed
+        elif value == 0:
+            print("Предупреждение: Значение равно нулю."
+                  " Скорость остается неизменной.")
         else:
-            print("Ошибка: значение должно быть положительным.")
+            print("Ошибка: Число должно быть положительным.")
 
     def decrease_speed(self, value):
         if value < 0:
-            self.speed -= value
+            self.speed -= abs(value)
             if self.speed < 0:
                 self.speed = 0
+        elif value == 0:
+            print("Предупреждение: Значение равно нулю."
+                  " Скорость остается неизменной.")
         else:
-            print("Ошибка: Значение должно быть положительным.")
+            print("Ошибка: Число должно быть отрицательным.")
 
     def embark_passengers(self, passengers):
         if not self.doors_open:
@@ -62,7 +68,8 @@ class Bus:
                     if occupant == passenger:
                         self.seat_map[seat_number] = None
                         self.free_seats += 1
-                        print(f"{passenger} покинул автобус с места номер {seat_number}")
+                        print(f"{passenger} покинул автобус"
+                              f" с места номер {seat_number}")
                         break
             else:
                 print(f"Ошибка: {passenger} не найден в автобусе.")
@@ -103,3 +110,11 @@ print('Список пассажиров после добавления нов�
 
 bus -= 'Иванов'
 print('Список пассажиров после удаления Грищука:', bus.passengers_list)
+
+print(bus.speed)
+
+bus.increase_speed(10)
+print(bus.speed)
+
+bus.decrease_speed(-30)
+print(bus.speed)
