@@ -22,7 +22,11 @@ class Car:
             print('The engine is already shut down.')
 
     def set_type(self, new_type):
-        self.type = new_type
+        # Check if not empty string
+        if isinstance(new_type, str) and new_type.strip():
+            self.type = new_type
+        else:
+            print("Invalid type. Please provide a non-empty string for type.")
 
     def set_year(self, new_year):
         if isinstance(new_year, int) and 1900 <= new_year <= 2100:
