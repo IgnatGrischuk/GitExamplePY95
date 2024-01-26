@@ -35,20 +35,21 @@ class Sphere:
 
     def set_radius(self, radius):
         try:
-            # Attempt to convert the radius to a float
             radius = float(radius)
-            # Check if the radius is a valid positive value
             if radius > 0:
-                # Assign the radius
                 self.radius = radius
-                print("Radius set successfully.")
             else:
-                print("Invalid radius. Please provide a positive value.")
-        except ValueError:
-            print("Invalid radius. Please provide a numeric value.")
+                raise ValueError("Radius must be a positive number.")
+        except ValueError as e:
+            print("Invalid radius:", e)
+            self.radius = 1
 
     def set_center(self, x, y, z):
-        self.center = (x, y, z)
+        try:
+            self.center = (int(x), int(y), int(z))
+        except ValueError:
+            print("Invalid center coordinates. Please provide numeric values.")
+            self.center = (0, 0, 0)
 
     def is_point_inside(self, x, y, z):
         distance = m.sqrt((x - self.center[0]) ** 2
