@@ -1,0 +1,159 @@
+create table authors(
+    id int primary key,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50)
+);
+
+create table books (
+    id int PRIMARY KEY,
+    title VARCHAR(255),
+    author_id INT,
+    publication_year INT,
+    FOREIGN KEY (author_id) REFERENCES authors(id)
+);
+
+create table sales (
+    id int PRIMARY KEY,
+    book_id INT,
+    quantity INT,
+    FOREIGN KEY (book_id) REFERENCES books(id)
+);
+
+insert into  authors (id, first_name, last_name)
+    values (1, 'Александр', 'Пушкин');
+
+insert into  authors (id, first_name, last_name)
+    values (2, 'Лев', 'Толстой');
+
+insert into  authors (id, first_name, last_name)
+    values (3, 'Фёдор', 'Достоевский');
+
+insert into books (id, title, author_id, publication_year)
+    values (1, 'Евгений Онегин', 1, 1833);
+
+insert into books (id, title, author_id, publication_year)
+    values (2, 'Война и мир', 2, 1869);
+
+insert into books (id, title, author_id, publication_year)
+    values(3, 'Преступление и наказание', 3, 1866);
+
+insert into sales (id, book_id, quantity)
+    values (1, 1, 100);
+
+insert into sales (id, book_id, quantity)
+    values (2, 2, 75);
+
+insert into sales (id, book_id, quantity)
+    values (3, 3, 50);
+
+select
+    books. title,
+    authors.first_name,
+    authors.last_name
+from
+    books
+INNER JOIN 
+    authors ON books.author_id = authors.id;
+    
+select
+    authors.first_name,
+    authors.last_name,
+    COALESCE(books.title, 'Нет книги') AS title
+from
+    authors
+LEFT JOIN 
+    books ON authors.id = books.author_id;
+    
+select
+    books.title,
+    authors.first_name,
+    authors.last_name
+from
+    books
+RIGHT JOIN 
+    authors ON books.author_id = authors.id;
+    
+select
+    authors.first_name,
+    authors.last_name,
+    books.title,
+    sales.quantity
+from
+    authors
+INNER JOIN 
+    books ON authors.id = books.author_id
+INNER JOIN 
+    sales ON books.id = sales.book_id;
+    
+select
+    authors.first_name,
+    authors.last_name,
+    COALESCE(books.title, 'Нет книги') AS title,
+    COALESCE(sales.quantity, 0) AS quantity
+from
+    authors
+LEFT JOIN 
+    books ON authors.id = books.author_id
+LEFT JOIN 
+    sales ON books.id = sales.book_id;
+    
+select
+    authors.first_name,
+    authors.last_name,
+    SUM(sales.quantity) AS total_sales
+from
+    authors
+INNER JOIN 
+    books ON authors.id = books.author_id
+INNER JOIN 
+    sales ON books.id = sales.book_id
+GROUP BY 
+    authors.id;
+    
+select
+    authors.first_name,
+    authors.last_name,
+    COALESCE(SUM(sales.quantity), 0) AS total_sales
+from
+    authors
+LEFT JOIN 
+    books ON authors.id = books.author_id
+LEFT JOIN 
+    sales ON books.id = sales.book_id
+GROUP BY 
+    authors.id;
+    
+select
+    authors.first_name,
+    authors.last_name
+from
+    authors
+INNER JOIN (
+    select
+        books.author_id,
+        SUM(sales.quantity) AS total_sales
+    from
+        books
+    INNER JOIN 
+        sales ON books.id = sales.book_id
+    GROUP BY 
+        books.author_id
+    ORDER BY 
+        total_sales DESC
+    LIMIT 1
+) as author_sales ON authors.id = author_sales.author_id;
+
+select
+    books.title,
+    sales.quantity
+from
+    books
+INNER JOIN 
+    sales on books.id = sales.book_id
+where
+    sales.quantity > (
+        select
+            AVG(quantity)
+        from
+            sales
+    );
