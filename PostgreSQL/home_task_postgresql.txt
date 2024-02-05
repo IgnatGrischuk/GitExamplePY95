@@ -1,4 +1,4 @@
-create table employees(
+create table if not exists employees(
     id INT primary key,
     Name VARCHAR(50),
     Position VARCHAR(50),
@@ -6,64 +6,74 @@ create table employees(
     Salary DECIMAL(10, 2)
 );
 
-
 insert into employees(
     id, name, "position" , department ,
     salary
     ) values (1, 'Ignat', 'developer', 'IT', 4500.50),
 (2, 'Roman', 'developer', 'IT', 4500.50),
 (3, 'Karina', 'manager', 'Marketing', 2500.20),
-(4, 'Irina', 'accountant', 'Finance', 2000.45)
-
+(4, 'Irina', 'accountant', 'Finance', 2000.45);
 
 insert into employees(
     id, name, "position" , department ,
     salary
-) values (5, 'Kristina', 'manager', 'Sales', 3000)
-
+) values (5, 'Kristina', 'manager', 'Sales', 3000);
 
 update employees
 set "position" = 'Senior Developer'
 where id = 2;
 
-
 alter table employees
-add column HireDate date;
-
-
-update employees
-set hiredate = '30.01.2023'
-where department = 'IT'
-
+add column if not exists HireDate date;
 
 update employees
-set hiredate = '12.02.2023'
-where department = 'Sales'
-
-
-update employees
-set hiredate = '24.12.2022'
-where department = 'Finance'
-
+set hiredate = '2023-01-30'
+where department = 'IT';
 
 update employees
-set hiredate = '20.12.2022'
-where department = 'Marketing'
+set hiredate = '2023-02-12'
+where department = 'Sales';
 
+update employees
+set hiredate = '2022-12-24'
+where department = 'Finance';
+
+update employees
+set hiredate = '2022-12-20'
+where department = 'Marketing';
 
 update employees
 set salary = '5500'
 where id = 2;
 
-
 create or replace function employees_operation()
 return text
 as $$
+declare
+    avg_salary decimal(10,2);
 begin
-	select name from employees where position = 'manager';
-	select name from employees where salary > 5000;
-    select name from employees where department = 'sales';
+    if exists (select 1 from employees where position = 'manager') then
+        raise notice 'Managers exist.';
+    else
+        raise notice 'No managers found.';
+    end if;
+
+    if exists (select 1 from employees where salary > 5000) then
+        raise notice 'Employees with salary greater than 5000 exist.';
+    else
+        raise notice 'No employees with salary greater than 5000 found.';
+    end if;
+
+    if exists (select 1 from employees where department = 'Sales') then
+        raise notice 'Sales department exists.';
+    else
+        raise notice 'Sales department not found.';
+    end if;
+
     select AVG(salary) into avg_salary from employees;
+    raise notice 'Average salary: %', avg_salary;
+
     drop table if exists employees;
+    return 'Employees operation completed successfully';
 end;
 $$ language plpgsql;

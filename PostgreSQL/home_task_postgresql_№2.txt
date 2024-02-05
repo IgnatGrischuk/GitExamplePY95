@@ -1,78 +1,110 @@
+-- Проверяем существование таблиц перед их созданием
+drop table if exists sales;
+drop table if exists books;
+drop table if exists authors;
+
+-- Создаем таблицу авторов
 create table authors(
-    id int primary key,
+    id INT PRIMARY KEY,
     first_name VARCHAR(50),
     last_name VARCHAR(50)
 );
 
+-- Создаем таблицу книг
 create table books (
-    id int PRIMARY KEY,
+    id INT PRIMARY KEY,
     title VARCHAR(255),
     author_id INT,
     publication_year INT,
     FOREIGN KEY (author_id) REFERENCES authors(id)
 );
 
+-- Создаем таблицу продаж
 create table sales (
-    id int PRIMARY KEY,
+    id INT PRIMARY KEY,
     book_id INT,
     quantity INT,
     FOREIGN KEY (book_id) REFERENCES books(id)
 );
 
-insert into  authors (id, first_name, last_name)
-    values (1, 'Александр', 'Пушкин');
+-- Проверяем наличие записей перед вставкой данных
+-- Вставляем данные об авторах
+insert into authors (id, first_name, last_name)
+select 1, 'Александр', 'Пушкин'
+where not exists  (select 1 from authors where id = 1);
 
-insert into  authors (id, first_name, last_name)
-    values (2, 'Лев', 'Толстой');
+insert into authors (id, first_name, last_name)
+select 2, 'Лев', 'Толстой'
+where not exists (select 1 from authors where id = 2);
 
-insert into  authors (id, first_name, last_name)
-    values (3, 'Фёдор', 'Достоевский');
+insert into authors (id, first_name, last_name)
+select 3, 'Фёдор', 'Достоевский'
+where not exists (select 1 from authors where id = 3);
+
+-- Вставляем данные о книгах
+insert into books (id, title, author_id, publication_year)
+select 1, 'Евгений Онегин', 1, 1833
+where not exists (select 1 from books where id = 1);
 
 insert into books (id, title, author_id, publication_year)
-    values (1, 'Евгений Онегин', 1, 1833);
+select 2, 'Война и мир', 2, 1869
+where not exists (select 1 from books where id = 2);
 
 insert into books (id, title, author_id, publication_year)
-    values (2, 'Война и мир', 2, 1869);
+select 3, 'Преступление и наказание', 3, 1866
+where not exists  (select 1 from books where id = 3);
 
-insert into books (id, title, author_id, publication_year)
-    values(3, 'Преступление и наказание', 3, 1866);
+-- Вставляем данные о продажах
+insert into sales (id, book_id, quantity)
+select 1, 1, 100
+where not exists  (select 1 from sales where id = 1);
 
 insert into sales (id, book_id, quantity)
-    values (1, 1, 100);
+select 2, 2, 75
+where not exists (select 1 from sales where id = 2);
 
 insert into sales (id, book_id, quantity)
-    values (2, 2, 75);
+select 3, 3, 50
+where not exists (select 1 from sales where id = 3);
 
-insert into sales (id, book_id, quantity)
-    values (3, 3, 50);
+-- Добавляем ограничения целостности
+alter table books
+add constraint fk_author_id
+FOREIGN KEY (author_id)
+REFERENCES authors(id);
 
-select
-    books. title,
-    authors.first_name,
-    authors.last_name
-from
-    books
-INNER JOIN 
-    authors ON books.author_id = authors.id;
-    
-select
-    authors.first_name,
-    authors.last_name,
-    COALESCE(books.title, 'Нет книги') AS title
-from
-    authors
-LEFT JOIN 
-    books ON authors.id = books.author_id;
-    
+alter table sales
+add constraint fk_book_id
+FOREIGN KEY (book_id)
+REFERENCES books(id);
+
 select
     books.title,
     authors.first_name,
     authors.last_name
 from
     books
-RIGHT JOIN 
+INNER JOIN
     authors ON books.author_id = authors.id;
-    
+
+select
+    authors.first_name,
+    authors.last_name,
+    COALESCE(books.title, 'Нет книги') AS title
+from
+    authors
+LEFT JOIN
+    books ON authors.id = books.author_id;
+
+select
+    books.title,
+    authors.first_name,
+    authors.last_name
+from
+    books
+RIGHT JOIN
+    authors ON books.author_id = authors.id;
+
 select
     authors.first_name,
     authors.last_name,
@@ -80,11 +112,11 @@ select
     sales.quantity
 from
     authors
-INNER JOIN 
+INNER JOIN
     books ON authors.id = books.author_id
-INNER JOIN 
+INNER JOIN
     sales ON books.id = sales.book_id;
-    
+
 select
     authors.first_name,
     authors.last_name,
@@ -92,37 +124,37 @@ select
     COALESCE(sales.quantity, 0) AS quantity
 from
     authors
-LEFT JOIN 
+LEFT JOIN
     books ON authors.id = books.author_id
-LEFT JOIN 
+LEFT JOIN
     sales ON books.id = sales.book_id;
-    
+
 select
     authors.first_name,
     authors.last_name,
     SUM(sales.quantity) AS total_sales
 from
     authors
-INNER JOIN 
+INNER JOIN
     books ON authors.id = books.author_id
-INNER JOIN 
+INNER JOIN
     sales ON books.id = sales.book_id
-GROUP BY 
+GROUP BY
     authors.id;
-    
+
 select
     authors.first_name,
     authors.last_name,
     COALESCE(SUM(sales.quantity), 0) AS total_sales
 from
     authors
-LEFT JOIN 
+LEFT JOIN
     books ON authors.id = books.author_id
-LEFT JOIN 
+LEFT JOIN
     sales ON books.id = sales.book_id
-GROUP BY 
+GROUP BY
     authors.id;
-    
+
 select
     authors.first_name,
     authors.last_name
@@ -134,22 +166,22 @@ INNER JOIN (
         SUM(sales.quantity) AS total_sales
     from
         books
-    INNER JOIN 
+    INNER JOIN
         sales ON books.id = sales.book_id
-    GROUP BY 
+    GROUP BY
         books.author_id
-    ORDER BY 
+    ORDER BY
         total_sales DESC
     LIMIT 1
-) as author_sales ON authors.id = author_sales.author_id;
+) as author_sales on authors.id = author_sales.author_id;
 
 select
     books.title,
     sales.quantity
 from
     books
-INNER JOIN 
-    sales on books.id = sales.book_id
+INNER JOIN
+    sales ON books.id = sales.book_id
 where
     sales.quantity > (
         select
