@@ -238,11 +238,11 @@ class TestikDB:
 
     def check_answer(self, question_id, user_answer):
         query = sql.SQL("SELECT is_correct_answer FROM answer WHERE"
-                        " question_id = %s AND is_correct_answer = %s")
-        self.cursor.execute(query, (question_id, str(user_answer).lower()))
+                        " question_id = %s")
+        self.cursor.execute(query, (question_id,))
         result = self.cursor.fetchone()
         if result:
-            return result[0]
+            return result[0] == user_answer
 
     def close(self):
         self.cursor.close()
