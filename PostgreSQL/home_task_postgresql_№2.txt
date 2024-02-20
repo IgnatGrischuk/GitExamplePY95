@@ -30,15 +30,15 @@ create table sales (
 -- Проверяем наличие записей перед вставкой данных
 -- Вставляем данные об авторах
 insert into authors (id, first_name, last_name)
-select 1, 'Александр', 'П'
+values (1, 'Александр', 'П');
 where not exists  (select 1 from authors where id = 1);
 
 insert into authors (id, first_name, last_name)
-select 2, 'Лев', 'Т'
+values (2, 'Лев', 'Т');
 where not exists (select 1 from authors where id = 2);
 
 insert into authors (id, first_name, last_name)
-select 3, 'Фёдор', 'Д'
+values (3, 'Фёдор', 'Д');
 where not exists (select 1 from authors where id = 3);
 
 -- Вставляем данные о книгах
