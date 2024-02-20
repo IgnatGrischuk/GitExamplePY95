@@ -30,41 +30,41 @@ create table sales (
 -- Проверяем наличие записей перед вставкой данных
 -- Вставляем данные об авторах
 insert into authors (id, first_name, last_name)
-values (1, 'Александр', 'П');
+values (1, 'Александр', 'П')
 where not exists  (select 1 from authors where id = 1);
 
 insert into authors (id, first_name, last_name)
-values (2, 'Лев', 'Т');
+values (2, 'Лев', 'Т')
 where not exists (select 1 from authors where id = 2);
 
 insert into authors (id, first_name, last_name)
-values (3, 'Фёдор', 'Д');
+values (3, 'Фёдор', 'Д')
 where not exists (select 1 from authors where id = 3);
 
 -- Вставляем данные о книгах
 insert into books (id, title, author_id, publication_year)
-select 1, 'Евгений Онегин', 1, 1833
+values (1, 'Евгений Онегин', 1, 1833)
 where not exists (select 1 from books where id = 1);
 
 insert into books (id, title, author_id, publication_year)
-select 2, 'Война и мир', 2, 1869
+values (2, 'Война и мир', 2, 1869)
 where not exists (select 1 from books where id = 2);
 
 insert into books (id, title, author_id, publication_year)
-select 3, 'Преступление и наказание', 3, 1866
+values (3, 'Преступление и наказание', 3, 1866)
 where not exists  (select 1 from books where id = 3);
 
 -- Вставляем данные о продажах
 insert into sales (id, book_id, quantity)
-select 1, 1, 100
+values (1, 1, 100)
 where not exists  (select 1 from sales where id = 1);
 
 insert into sales (id, book_id, quantity)
-select 2, 2, 75
+values (2, 2, 75)
 where not exists (select 1 from sales where id = 2);
 
 insert into sales (id, book_id, quantity)
-select 3, 3, 50
+values (3, 3, 50)
 where not exists (select 1 from sales where id = 3);
 
 -- Добавляем ограничения целостности
